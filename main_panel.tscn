@@ -1,18 +1,69 @@
-[gd_scene load_steps=2 format=3 uid="uid://b4uov8hresyge"]
+[gd_scene load_steps=3 format=3 uid="uid://bd1tqljfu3s5m"]
 
-[ext_resource type="Script" path="res://addons/gates-exporter-plugin/export_button.gd" id="1_27v86"]
+[ext_resource type="Script" path="res://addons/gates-exporter-plugin/scripts/config.gd" id="1_sj4ad"]
+[ext_resource type="Script" path="res://addons/gates-exporter-plugin/scripts/export_button.gd" id="1_wkrbm"]
 
 [node name="main_panel" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_sj4ad")
 
-[node name="Button" type="Button" parent="."]
+[node name="export_label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 67.0
-offset_bottom = 39.0
-text = "Export"
-script = ExtResource("1_27v86")
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 151.0
+offset_bottom = 42.0
+text = "Export Directory"
 
-[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
+[node name="export_edit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 24.0
+offset_top = 48.0
+offset_right = 232.0
+offset_bottom = 79.0
+text = "res://export_test/"
+expand_to_text_length = true
+
+[node name="icon_label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 151.0
+offset_bottom = 122.0
+text = "Icon Path"
+metadata/_edit_use_anchors_ = true
+
+[node name="icon_edit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+offset_left = 24.0
+offset_top = 128.0
+offset_right = 232.0
+offset_bottom = 159.0
+text = "res://addons/gates-exporter-plugin/template/icon.png"
+expand_to_text_length = true
+metadata/_edit_use_anchors_ = true
+
+[node name="export_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 184.0
+offset_right = 88.0
+offset_bottom = 215.0
+text = "Export!"
+script = ExtResource("1_wkrbm")
+
+[connection signal="focus_exited" from="export_edit" to="." method="_on_export_edit_focus_exited"]
+[connection signal="text_changed" from="export_edit" to="." method="_on_export_edit_text_changed"]
+[connection signal="focus_exited" from="icon_edit" to="." method="_on_icon_edit_focus_exited"]
+[connection signal="text_changed" from="icon_edit" to="." method="_on_icon_edit_text_changed"]
+[connection signal="button_down" from="export_button" to="export_button" method="_on_button_down"]
