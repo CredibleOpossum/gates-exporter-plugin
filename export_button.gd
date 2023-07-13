@@ -4,7 +4,7 @@ extends Button
 func _on_button_down():
 	var path = OS.get_executable_path()
 	var project_path = ProjectSettings.globalize_path("res://")
-	var template_path = "res://addons/GatesExporter/template/"
+	var template_path = "res://addons/gates-exporter-plugin/template/"
 	var dir = DirAccess.open("res://")
 	dir.make_dir("export")
 	OS.execute(path, ["--headless", "--path", project_path, "--export-pack", "gates", project_path + "/export/project.zip"])

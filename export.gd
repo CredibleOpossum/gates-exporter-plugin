@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 
-const MainPanel = preload("res://addons/GatesExporter/main_panel.tscn")
+const MainPanel = preload("res://addons/gates-exporter-plugin/main_panel.tscn")
 
 var main_panel_instance
 
