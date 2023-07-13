@@ -1,0 +1,5 @@
+[gate]
+title="Welcome"
+description="Explore other worlds!"
+image="icon.png"
+resource_pack="project.zip"
