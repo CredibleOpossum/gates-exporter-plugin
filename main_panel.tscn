@@ -1,69 +1,101 @@
-[gd_scene load_steps=3 format=3 uid="uid://bd1tqljfu3s5m"]
+[gd_scene load_steps=4 format=3 uid="uid://bd1tqljfu3s5m"]
 
 [ext_resource type="Script" path="res://addons/gates-exporter-plugin/scripts/config.gd" id="1_sj4ad"]
 [ext_resource type="Script" path="res://addons/gates-exporter-plugin/scripts/export_button.gd" id="1_wkrbm"]
+[ext_resource type="Script" path="res://addons/gates-exporter-plugin/scripts/choose_dir.gd" id="2_poseb"]
 
 [node name="TheGates Export" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -821.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_sj4ad")
 
-[node name="export_label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 16.0
-offset_right = 151.0
-offset_bottom = 42.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="export_label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
 text = "Export Directory"
 
-[node name="export_edit" type="LineEdit" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 24.0
-offset_top = 48.0
-offset_right = 232.0
-offset_bottom = 79.0
-text = "res://export"
-expand_to_text_length = true
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
 
-[node name="icon_label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 96.0
-offset_right = 151.0
-offset_bottom = 122.0
+[node name="export_edit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "res://export"
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("line_edit", "file_dialog")]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+text = "Open"
+script = ExtResource("2_poseb")
+line_edit = NodePath("../export_edit")
+file_dialog = NodePath("../FileDialog")
+
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer/HBoxContainer"]
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(808, 500)
+ok_button_text = "Select This Folder"
+file_mode = 2
+access = 2
+
+[node name="icon_label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
 text = "Icon Path"
 metadata/_edit_use_anchors_ = true
 
-[node name="icon_edit" type="LineEdit" parent="."]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="icon_edit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-offset_left = 24.0
-offset_top = 128.0
-offset_right = 232.0
-offset_bottom = 159.0
+layout_mode = 2
+size_flags_horizontal = 3
 text = "res://addons/gates-exporter-plugin/template/icon.png"
-expand_to_text_length = true
 metadata/_edit_use_anchors_ = true
 
-[node name="export_button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 184.0
-offset_right = 88.0
-offset_bottom = 215.0
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2" node_paths=PackedStringArray("line_edit", "file_dialog")]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+text = "Choose"
+script = ExtResource("2_poseb")
+line_edit = NodePath("../icon_edit")
+file_dialog = NodePath("../FileDialog")
+
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer/HBoxContainer2"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(808, 500)
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.png", "*.jpg", "*.jpeg")
+
+[node name="export_button" type="Button" parent="VBoxContainer" node_paths=PackedStringArray("config_manager")]
+layout_mode = 2
 text = "Export!"
 script = ExtResource("1_wkrbm")
+config_manager = NodePath("../..")
 
-[connection signal="focus_exited" from="export_edit" to="." method="_on_export_edit_focus_exited"]
-[connection signal="text_changed" from="export_edit" to="." method="_on_export_edit_text_changed"]
-[connection signal="focus_exited" from="icon_edit" to="." method="_on_icon_edit_focus_exited"]
-[connection signal="text_changed" from="icon_edit" to="." method="_on_icon_edit_text_changed"]
-[connection signal="button_down" from="export_button" to="export_button" method="_on_button_down"]
+[connection signal="focus_exited" from="VBoxContainer/HBoxContainer/export_edit" to="." method="_on_export_edit_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/export_edit" to="." method="_on_export_edit_text_changed"]
+[connection signal="path_changed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_export_edit_text_changed"]
+[connection signal="selected" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_icon_edit_focus_exited"]
+[connection signal="focus_exited" from="VBoxContainer/HBoxContainer2/icon_edit" to="." method="_on_icon_edit_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/icon_edit" to="." method="_on_icon_edit_text_changed"]
+[connection signal="path_changed" from="VBoxContainer/HBoxContainer2/Button" to="." method="_on_icon_edit_text_changed"]
+[connection signal="selected" from="VBoxContainer/HBoxContainer2/Button" to="." method="_on_icon_edit_focus_exited"]
+[connection signal="button_down" from="VBoxContainer/export_button" to="VBoxContainer/export_button" method="_on_button_down"]

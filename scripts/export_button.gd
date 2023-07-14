@@ -1,9 +1,10 @@
 @tool
 extends Button
 
+@export var config_manager: Control
+
 func _on_button_down():
-	
-	var config = self.get_parent().config
+	var config = config_manager.config
 	var export_directory = config.get_value("config", "export_directory")
 	if export_directory == null:
 		push_error("ERROR: export_directory key does not exist, does config.cfg exist?")
